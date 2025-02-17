@@ -102,9 +102,39 @@ const tripsUpdateTrip = async(req, res) => {
 
 }
 
+const tripsDeleteTrip = async(req, res) => {
+    const q = await Model
+        .findOneAndDelete(
+            { 'code' : req.params.tripCode },
+            {
+                code: req.body.code,
+                name: req.body.name,
+                length: req.body.length,
+                start: req.body.start,
+                resort: req.body.resort,
+                perPerson: req.body.perPerson,
+                image: req.body.image,
+                descriptino: req.body.description
+            }
+        )
+        .exec();
+
+        if(!q) {
+            return res
+                .status(400)
+                .json(err);
+        }
+        else {
+            return res
+            .status(201)
+            .json(q);
+        }
+};
+
 module.exports = {
     tripsList,
     tripsFindByCode,
     tripsAddTrip,
-    tripsUpdateTrip
+    tripsUpdateTrip,
+    tripsDeleteTrip,
 }
